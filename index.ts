@@ -24,7 +24,7 @@ class Player {
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 
-    public update()  {
+    public update() {
         this.x += this.dx;
         this.y += this.dy;
     }
@@ -51,23 +51,53 @@ class Game {
     private canvas: HTMLCanvasElement;
     private ctx: CanvasRenderingContext2D;
     public player: any;
+    private floorImage: any;
+    private isFloorLoaded: boolean = false;
     constructor(canvasId: string) {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-        this.player = new Player(50, 50, 40, 40, 'blue', 4);
+        this.player = new Player(50, 50, 40, 40, 'blue', 2);
+
+        // make the canvas fullscreen
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
 
         document.addEventListener('keydown', (e) => this.player.move(e.key, true));
         document.addEventListener('keyup', (e) => this.player.move(e.key, false));
+
+        this.loadFloor();
     }
 
     public start() {
         this.update();
     }
 
+    // load the floor
+    public loadFloor() {
+        this.floorImage = new Image();
+        this.floorImage.src = 'floor-128-50.png';
+        this.floorImage.onload = () => {
+            console.log('image loaded')
+            this.isFloorLoaded = true;
+        }
+        this.floorImage.onerror = () => {
+            console.error("Failed to load image: ", this.floorImage.src);
+        };
+    }
+
+    public drawFloor() {
+        if (this.isFloorLoaded) {
+            this.ctx.drawImage(this.floorImage, 0, 0);
+        }
+    }
+
+    // game loop
     public update() {
         this.clearCanvas();
+        this.drawFloor();
         this.player.update();
         this.player.draw(this.ctx);
+        console.log(this.player.x, this.player.y, this.player.dx, this.player.dy);
         requestAnimationFrame(() => this.update());
     }
 

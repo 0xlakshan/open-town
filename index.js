@@ -37,19 +37,44 @@ class Player {
 }
 class Game {
     constructor(canvasId) {
+        this.isFloorLoaded = false;
         this.canvas = document.getElementById(canvasId);
         this.ctx = this.canvas.getContext('2d');
-        this.player = new Player(50, 50, 40, 40, 'blue', 4);
+        this.player = new Player(50, 50, 40, 40, 'blue', 2);
+        // make the canvas fullscreen
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         document.addEventListener('keydown', (e) => this.player.move(e.key, true));
         document.addEventListener('keyup', (e) => this.player.move(e.key, false));
+        this.loadFloor();
     }
     start() {
         this.update();
     }
+    // load the floor
+    loadFloor() {
+        this.floorImage = new Image();
+        this.floorImage.src = 'floor-128-50.png';
+        this.floorImage.onload = () => {
+            console.log('image loaded');
+            this.isFloorLoaded = true;
+        };
+        this.floorImage.onerror = () => {
+            console.error("Failed to load image: ", this.floorImage.src);
+        };
+    }
+    drawFloor() {
+        if (this.isFloorLoaded) {
+            this.ctx.drawImage(this.floorImage, 0, 0);
+        }
+    }
+    // game loop
     update() {
         this.clearCanvas();
+        this.drawFloor();
         this.player.update();
         this.player.draw(this.ctx);
+        console.log(this.player.x, this.player.y, this.player.dx, this.player.dy);
         requestAnimationFrame(() => this.update());
     }
     clearCanvas() {
