@@ -54,7 +54,7 @@ class Game {
     // load the floor
     loadFloor() {
         this.floorImage = new Image();
-        this.floorImage.src = 'floor-128-50.png';
+        this.floorImage.src = './assets/compressed/floor-128-50.png';
         this.floorImage.onload = () => {
             console.log('image loaded');
             this.isFloorLoaded = true;
@@ -65,7 +65,12 @@ class Game {
     }
     drawFloor() {
         if (this.isFloorLoaded) {
-            this.ctx.drawImage(this.floorImage, 0, 0);
+            const tileSize = 128;
+            for (let x = 0; x < this.canvas.width; x += tileSize) {
+                for (let y = 0; y < this.canvas.height; y += tileSize) {
+                    this.ctx.drawImage(this.floorImage, x, y);
+                }
+            }
         }
     }
     // game loop
@@ -83,3 +88,12 @@ class Game {
 }
 const game = new Game("canvas");
 game.start();
+// let windowHeight = 996;
+// let windowWidth = 1566;
+// let tileSize = 128;
+// for (let x = 0; x < windowWidth; x += tileSize) {
+//     console.log("x", x);
+//     for (let y = 0; y < windowHeight; y += tileSize) {
+//         console.log(y);
+//     }
+// }
