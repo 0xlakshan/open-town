@@ -114,13 +114,3 @@ class Game {
 
 const game = new Game("canvas");
 game.start();
-
-// let windowHeight = 996;
-// let windowWidth = 1566;
-// let tileSize = 128;
-// for (let x = 0; x < windowWidth; x += tileSize) {
-//     console.log("x", x);
-//     for (let y = 0; y < windowHeight; y += tileSize) {
-//         console.log(y);
-//     }
-// }
