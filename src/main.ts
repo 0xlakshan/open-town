@@ -8,6 +8,15 @@ class Player {
     dx: number;
     dy: number;
 
+    leftSprites: HTMLImageElement[];
+    rightSprites: HTMLImageElement[];
+    isSpritesLoaded: boolean = false;
+    loadedImages: number = 0;
+    currentFrame: number = 0;
+    facing: string = 'right';
+    animationTimer: number = Date.now();
+    animationInterval: number = 100; // Milliseconds between frames
+
     constructor(x: number, y: number, width: number, height: number, color: string, speed: number) {
         this.x = x;
         this.y = y;
@@ -17,16 +26,60 @@ class Player {
         this.speed = speed;
         this.dx = 0;
         this.dy = 0;
+
+        this.leftSprites = [];
+        this.rightSprites = [];
+
+        // load sprites for left and right movement
+        for (let i = 1; i <= 4; i++) {
+            const leftImg = new Image();
+            leftImg.src = `../public/assets/compressed/characters/pink-monster/walking/left/${i}.png`;
+            leftImg.onload = () => {
+                this.loadedImages++;
+                if (this.loadedImages === 6) this.isSpritesLoaded = true;
+            };
+            this.leftSprites.push(leftImg);
+
+            const rightImg = new Image();
+            rightImg.src = `../public/assets/compressed/characters/pink-monster/walking/right/${i}.png`;
+            rightImg.onload = () => {
+                this.loadedImages++;
+                if (this.loadedImages === 6) this.isSpritesLoaded = true;
+            };
+            this.rightSprites.push(rightImg);
+        }
     }
 
     public draw(ctx: any) {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        if (this.isSpritesLoaded) {
+            const sprites = this.facing === 'left' ? this.leftSprites : this.rightSprites;
+            const frame = (this.dx !== 0 || this.dy !== 0) ? this.currentFrame : 0;
+            ctx.drawImage(sprites[frame], this.x, this.y, this.width, this.height);
+        } else {
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
     }
 
     public update() {
         this.x += this.dx;
         this.y += this.dy;
+
+        // update facing direction based on horizontal movement
+        if (this.dx < 0) {
+            this.facing = 'left';
+        } else if (this.dx > 0) {
+            this.facing = 'right';
+        }
+
+        // animate if moving
+        if (this.dx !== 0 || this.dy !== 0) {
+            const now = Date.now();
+            if (now - this.animationTimer > this.animationInterval) {
+                this.currentFrame = (this.currentFrame + 1) % 4;
+                this.animationTimer = now;
+            }
+        }
     }
 
     public move(key: any, isPressed: any) {
@@ -101,7 +154,7 @@ class Game {
         this.clearCanvas();
         this.drawFloor();
         this.player.update();
-        // Clamp player position to canvas borders
+        // border collision detection
         if (this.player.x < 0) {
             this.player.x = 0;
         }
