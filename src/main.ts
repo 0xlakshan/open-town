@@ -13,7 +13,7 @@ class Player {
     isSpritesLoaded: boolean = false;
     loadedImages: number = 0;
     currentFrame: number = 0;
-    facing: string = 'right';
+    facing: "left" | "right" | "up" = 'right';
     animationTimer: number = Date.now();
     animationInterval: number = 100; // Milliseconds between frames
 
@@ -109,7 +109,7 @@ class Game {
     constructor(canvasId: string) {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-        this.player = new Player(50, 50, 40, 40, 'blue', 2);
+        this.player = new Player(50, 50, 40, 40, 'blue', 1.25);
 
         // make the canvas fullscreen
         this.canvas.width = window.innerWidth;
