@@ -109,7 +109,7 @@ class Game {
     constructor(canvasId: string) {
         this.canvas = document.getElementById(canvasId) as HTMLCanvasElement;
         this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
-        this.player = new Player(50, 50, 40, 40, 'blue', 1.25);
+        this.player = new Player(50, 50, 70, 70, 'blue', 2);
 
         // make the canvas fullscreen
         this.canvas.width = window.innerWidth;
