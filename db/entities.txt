@@ -1,0 +1,39 @@
+- Users
+    - id
+    - username
+    - email
+    - password
+    - language
+    - settings
+    - created_at
+    - updated_at
+
+- Virtual Rooms
+    - id
+    - title
+    - creator_id
+    - is_active
+    - active users
+    - created_at
+    - updated_at
+
+- Video Calls Session Metadata
+    - id
+    - start_time
+    - end_time
+    - call_participants
+
+- Room Participants
+    - room_id
+    - user_id
+    - is_online
+    - position
+    - last_seen
+
+- Chats
+    - id
+    - room_id
+    - user_id
+    - username
+    - message
+    - created_at
