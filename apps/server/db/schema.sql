@@ -15,6 +15,7 @@ CREATE TABLE virtual_rooms (
     title VARCHAR(255),
     is_active BOOLEAN,
     active_user_count INT,
+    room_hash INT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id)
