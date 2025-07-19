@@ -1,0 +1,30 @@
+{
+    "type": "module",
+    "description": "Platform API for Open-Town",
+    "author": "open-town Inc.",
+    "license": "MIT0",
+    "scripts": {
+        "lint": "eslint --cache src",
+        "build": "esbuild src/index.ts --bundle --platform=node --outdir=dist --format=esm --sourcemap",
+        "type-check": "tsc",
+        "start": "pnpm dev",
+        "dev": "run-p dev:* --print-label",
+        "dev:server": "tsx watch src"
+    },
+    "devDependencies": {
+        "@types/express": "^5.0.3",
+        "@types/node": "^24.0.15",
+        "esbuild": "^0.25.7",
+        "eslint": "^9.31.0",
+        "npm-run-all": "^4.1.5",
+        "tsx": "^4.20.3",
+        "typescript": "^5.8.3"
+    },
+    "dependencies": {
+        "@trpc/server": "^11.4.3",
+        "@types/uuid": "^10.0.0",
+        "express": "^5.1.0",
+        "uuid": "^11.1.0",
+        "zod": "^4.0.5"
+    }
+}
