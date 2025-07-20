@@ -1,30 +1,31 @@
-CREATE TABLE users (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(255) UNIQUE,
-    email VARCHAR(255) UNIQUE,
-    password VARCHAR(255),
-    language VARCHAR(50),
+-- add indexing
+
+CREATE TABLE user (
+    id INT PRIMARY KEY NOT NULL,
+    username VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    language DEFAULT 'en',
     settings JSON,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE TABLE virtual_rooms (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    title VARCHAR(255),
+CREATE TABLE virtual_room (
+    id INT PRIMARY KEY NOT NULL,
+    user_id INT NOT NULL FOREIGN KEY REFERENCES user(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
     is_active BOOLEAN,
-    active_user_count INT,
-    room_hash INT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    active_user_count INT DEFAULT 0,
+    room_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE TABLE user_virtual_room_sessions (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
-    room_id INT,
+CREATE TABLE user_virtual_room_session (
+    id INT PRIMARY KEY NOT NULL,
+    user_id INT NOT NULL FOREIGN KEY REFERENCES user(id) ON DELETE CASCADE,
+    room_id INT NOT NULL FOREIGN KEY REFERENCES virtual_room(id) ON DELETE CASCADE,
     position JSON,
     status ENUM('idle', 'offline', 'online'),
     mic_enabled BOOLEAN,
@@ -32,22 +33,22 @@ CREATE TABLE user_virtual_room_sessions (
     screen_sharing BOOLEAN,
     joined_at TIMESTAMP,
     last_seen TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (room_id) REFERENCES virtual_rooms(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE TABLE chats (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    room_id INT,
-    user_id INT,
+CREATE TABLE chat (
+    id INT PRIMARY KEY,
+    room_id INT NOT NULL FOREIGN KEY REFERENCES virtual_room(id) ON DELETE CASCADE,
+    user_id INT NOT NULL FOREIGN KEY REFERENCES user(id) ON DELETE CASCADE,
     message TEXT,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (room_id) REFERENCES virtual_rooms(id),
-    FOREIGN KEY (user_id) REFERENCES users(id)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL,
 );
 
-CREATE TABLE video_calls (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    room_id INT,
-    FOREIGN KEY (room_id) REFERENCES virtual_rooms(id)
+CREATE TABLE video_call (
+    id INT PRIMARY KEY,
+    room_id INT NOT NULL FOREIGN KEY REFERENCES virtual_room(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NOT NULL
 );
