@@ -1,4 +1,4 @@
-import { router, t } from '../trpc';
+import { publicProcedure, router, t } from '../trpc';
 import { user } from '../../../db/schema';
 import { z } from 'zod';
 
@@ -31,5 +31,12 @@ export const userRouter = router({
         console.log(error);
       }
     }),
-  // listUsers: publicProcedure.query(() => db.posts),
+  listUsers: publicProcedure.query(async ({ ctx }) => {
+    try {
+      const users = await ctx.db.select().from(user);
+      return users;
+    } catch (error) {
+      console.log(error);
+    }
+  }),
 });
