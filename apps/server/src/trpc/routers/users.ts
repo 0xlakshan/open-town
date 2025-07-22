@@ -16,14 +16,14 @@ export const userRouter = router({
         const newUser = await ctx.db
           .insert(user)
           .values({
-          id: crypto.randomUUID(),
-          userName: input.userName,
-          email: input.email,
-          emailVerified: input.emailVerified,
-          password: input.password,
-          language: input.language,
-          createdAt: new Date(),
-          updatedAt: new Date()
+            id: crypto.randomUUID(),
+            userName: input.userName,
+            email: input.email,
+            emailVerified: input.emailVerified,
+            password: input.password,
+            language: input.language,
+            createdAt: new Date(),
+            updatedAt: new Date()
           }).returning();
 
           return newUser;
