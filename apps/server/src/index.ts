@@ -2,33 +2,20 @@ import * as trpcExpress from '@trpc/server/adapters/express';
 import express from 'express';
 import { createContext } from './trpc/trpc';
 import { appRouter } from './trpc';
-
-import { drizzle } from 'drizzle-orm/postgres-js';
-
-
+import { createConnection } from '../db/index';
 
 
 async function main() {
   
   // DB Connection
-  const db = drizzle("postgresql://temp_dev_user:625625@localhost:5432/postgres");
-  try {
-    const result = await db.execute('select 1');
-    const table = await db.execute('select * from test_table');
-    console.log(table);
-    console.log('DB Connected Successfully', result);
-  } catch (error) {
-    console.log('DB Connection Failed', error);
-    process.exit(0);
-  }
+  await createConnection('postgresql://temp_dev_user:625625@localhost:5432/postgres');
 
   // express implementation
   const app = express();
 
   app.use((req, _res, next) => {
-    // request logger
-    console.log('⬅️ ', req.method, req.path, req.body ?? req.query);
-
+    // logger
+    console.log('🌵', req.method, req.path, req.body ?? req.query);
     next();
   });
 
@@ -42,8 +29,10 @@ async function main() {
     res.send('hello');
   });
 
-  app.listen(2021, () => {
-    console.log('listening on port 2021');
+
+  const PORT = 2021;
+  app.listen(PORT, () => {
+    console.log(`listening on port ${PORT}`);
   });
 }
 

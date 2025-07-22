@@ -4,6 +4,7 @@ CREATE TABLE user (
     id INT PRIMARY KEY NOT NULL,
     username VARCHAR(255),
     email VARCHAR(255) UNIQUE NOT NULL,
+    emailVerified BOOLEAN NOT NULL,
     password VARCHAR(255) NOT NULL,
     language DEFAULT 'en',
     settings JSON,
