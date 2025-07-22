@@ -22,7 +22,8 @@ export const getDB = () => {
 };
 
 export const getConnection = () => {
-    if (!connection) throw new Error('Connection Error')
+    if (!connection) throw new Error('Connection Error');
+    return connection;
 };
 
 export type DB = ReturnType<typeof createDrizzle>;
