@@ -1,5 +1,5 @@
 import { userRouter } from "./routers/users";
-import { router } from "./trpc";
+import { publicProcedure, router } from "./trpc";
 
 // --------- create procedures etc
 // const messageRouter = router({
@@ -15,7 +15,7 @@ import { router } from "./trpc";
 // root router to call
 export const appRouter = router({
   // merge predefined routers
-  user: userRouter
+  user: userRouter,
   // message: messageRouter,
   // // or individual procedures
   // hello: publicProcedure.input(z.string().nullish()).query(({ input, ctx }) => {

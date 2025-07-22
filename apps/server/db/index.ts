@@ -7,19 +7,22 @@ const createDrizzle = (connection: Sql) => drizzle(connection, { schema });
 let db: ReturnType<typeof createDrizzle>;
 let connection: Sql;
 
-export const createConnection = async (url: string) => {
-    try {
-        connection = postgres(url, { max: 10 });
-        db = createDrizzle(connection);
-        const result = await db.execute('SELECT 1');
-        console.log('DB Connected Successfully', result);
-    } catch (error) {
-        console.log('DB Connection Failed', error);
-        process.exit(1);
+export const createConnection = (url: string) => {
+    connection = postgres(url, { max: 10 });
+    db = createDrizzle(connection);
+    return {
+        db,
+        connection
     }
 }
 
-export const getDB = () => db;
-export const getConnection = () => connection;
+export const getDB = () => {
+    if (!db) throw new Error("Connection Error");
+    return db;
+};
+
+export const getConnection = () => {
+    if (!connection) throw new Error('Connection Error')
+};
 
 export type DB = ReturnType<typeof createDrizzle>;

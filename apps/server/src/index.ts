@@ -6,12 +6,10 @@ import { createConnection } from '../db/index';
 
 
 async function main() {
-  
-  // DB Connection
-  await createConnection('postgresql://temp_dev_user:625625@localhost:5432/postgres');
-
   // express implementation
   const app = express();
+
+  await createConnection('postgresql://temp_dev_user:625625@localhost:5432/postgres');
 
   app.use((req, _res, next) => {
     // logger
