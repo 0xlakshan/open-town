@@ -16,6 +16,7 @@ import { publicProcedure, router } from "./trpc";
 export const appRouter = router({
   // merge predefined routers
   user: userRouter,
+  virtualRoom: virtualRoomRouter
   // message: messageRouter,
   // // or individual procedures
   // hello: publicProcedure.input(z.string().nullish()).query(({ input, ctx }) => {
