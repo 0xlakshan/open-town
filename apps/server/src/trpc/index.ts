@@ -1,4 +1,5 @@
 import { userRouter } from "./routers/users";
+import { virtualRoomRouter } from "./routers/virtualRooms";
 import { publicProcedure, router } from "./trpc";
 
 // --------- create procedures etc
@@ -16,7 +17,7 @@ import { publicProcedure, router } from "./trpc";
 export const appRouter = router({
   // merge predefined routers
   user: userRouter,
-  virtualRoom: virtualRoomRouter
+  virtualRoom: virtualRoomRouter,
   // message: messageRouter,
   // // or individual procedures
   // hello: publicProcedure.input(z.string().nullish()).query(({ input, ctx }) => {
@@ -39,3 +40,4 @@ export const appRouter = router({
 });
 
 export type AppRouter = typeof appRouter;
+
