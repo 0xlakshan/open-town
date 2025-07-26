@@ -1,6 +1,6 @@
 import { userRouter } from "./routers/users";
 import { virtualRoomRouter } from "./routers/virtualRooms";
-import { publicProcedure, router } from "./trpc";
+import { router } from "./trpc";
 
 // --------- create procedures etc
 // const messageRouter = router({
